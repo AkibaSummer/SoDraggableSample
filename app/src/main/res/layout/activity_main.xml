@@ -12,6 +12,10 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+        <!-- using include -->
+        <include layout="@layout/layout_button_group"
+            android:id="@+id/included_buttons"/>
+
         <!--write string directly (DO NOT RECOMMEND)-->
         <TextView
             android:layout_width="wrap_content"
@@ -63,14 +67,14 @@
             android:thumb="@drawable/seek_bar_sample_thumb" />
 
         <!--with out any extra settings, seek bar looks like...-->
-        <SeekBar
-            android:id="@+id/seekBarOrigin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:max="@string/rgb_max" />
+        <!--<SeekBar-->
+            <!--android:id="@+id/seekBarOrigin"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginTop="12dp"-->
+            <!--android:max="@string/rgb_max" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,7 +106,6 @@
                 android:textSize="24sp"
                 android:text="@={Converters.convertToString(rgb.blue)}" />
         </LinearLayout>
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_view"

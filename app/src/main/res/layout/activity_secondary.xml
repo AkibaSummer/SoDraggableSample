@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- original style -->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/result"
+        android:id="@+id/btn_result"
+        app:layout_constraintTop_toBottomOf="@id/btn_camera" />
+
+    <Button
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/camera"
+        app:layout_constraintTop_toBottomOf="@id/linear" />
+
+    <ImageView
+        android:contentDescription="@string/camera"
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="400dp"
+        android:layout_margin="24px"
+        app:layout_constraintTop_toBottomOf="@id/btn_result"/>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/edit_r"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/edit_g"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="0"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/edit_b"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="0"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,14 +1,18 @@
 package bupt.astroleander.sodraggable;
 
+import android.app.Application;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import bupt.astroleander.sodraggable.adapter.RecyclerGridAdapter;
 import bupt.astroleander.sodraggable.databinding.ActivityMainBinding;
@@ -25,8 +29,11 @@ import bupt.astroleander.sodraggable.databinding.ActivityMainBinding;
  *  </p>
  */
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
-    private RGBViewModel rgb;
+    // all const code in delivers intent must be public
+    public static final int CODE = 1926;
 
+    private RGBViewModel rgb;
+    private ActivityMainBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         // using data binding replacing standard activity style
         // if you are not using data bind in google.lifecycle package, you must add next line
 //        setContentView(R.layout.activity_main);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        this.binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         // initialize viewmodel and send it to data-binding auto-generate class
         final RGBViewModel vm = new RGBViewModel();
@@ -100,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         barBlue.setOnSeekBarChangeListener(seekBarListener);
 
 
-        // For principle dry and make code clear
+        // For principle dry and making code clear
         // , we should extract different functions into functions to make activity ( especially onCreate method ) more readable
         // like that
         initGrid();
@@ -108,7 +115,63 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     }
 
     private void initButton() {
+        binding.includedButtons.btnBundle.setOnClickListener(v->{
+            loadAllRGBValue();
+        });
+        binding.includedButtons.btnParcel.setOnClickListener(v->{
+            loadAllRGBValue();
+        });
+        binding.includedButtons.btnSerialize.setOnClickListener(v->{
+            loadAllRGBValue();
+        });
+    }
 
+    private void loadAllRGBValue() {
+        Intent intent = new Intent();
+        // r uses bundle
+        Bundle bundle = new Bundle();
+        bundle.putInt("r",this.rgb.red.get());
+
+        intent.putExtra("bundle", bundle);
+
+        // g uses parcel
+        GParcelable g = new GParcelable(this.rgb.green.get());
+        intent.putExtra("parcel", g);
+
+        // b uses serialization
+        BSerializable b = new BSerializable(this.rgb.blue.get());
+        intent.putExtra("serialize", b);
+
+        notifyStartActivity(intent);
+    }
+
+
+    private void notifyStartActivity(Intent intent) {
+        intent.setClass(this,SecondaryActivity.class);
+        // a more general intent declaration is declaring target class name directly
+        // Intent intent = new Intent(this, SecondaryActivity.class);
+        startActivityForResult(intent,CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try{
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == CODE){
+                switch (resultCode){
+                    case SecondaryActivity.CODE_EMPTY:
+                        Snackbar.make(this.binding.getRoot(),"CODE: "+resultCode,Snackbar.LENGTH_INDEFINITE).show();
+                    case SecondaryActivity.CODE_OK:
+                        this.rgb.red.set(data.getIntExtra("r",255));
+                        this.rgb.green.set(data.getIntExtra("g",255));
+                        this.rgb.blue.set(data.getIntExtra("b",255));
+                        notifyColorChanged();
+                }
+            }
+        }catch (Exception exc){
+            Toast.makeText(getBaseContext(),"Some thing goes error on onActivityResult: "+exc.toString(),Toast.LENGTH_LONG).show();
+            Log.e(getClass().getName(), "Some thing goes error on onActivityResult: "+exc.toString());
+        }
     }
 
     // initialize recyclerView

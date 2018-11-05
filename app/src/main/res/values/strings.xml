@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SoDraggable</string>
     <string name="rgb_max">255</string>
+    <string name="bundle">Bundle</string>
+    <string name="serialize">Serialize</string>
+    <string name="parcel">Parcel</string>
+    <string name="camera">Camera</string>
+    <string name="result">Set Result</string>
 </resources>
